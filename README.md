@@ -17,7 +17,7 @@ To run the example, type:
 The code will randomly generate a problem with 300 available packages with a weight between 
 1 and 100 lbs. It generates two tables to show the problem and the results.
 
-![readme_images](readme_images/solution "solution")
+![readme_images](readme_images/solution.png "solution")
 
 The upper left quadrant of the table contains the highest priority packages that have been
 in transit for the longest. The solution should show more packages in the first column and 
