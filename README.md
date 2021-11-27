@@ -12,6 +12,7 @@ minimized. The truck's weight and size capacity must not be exceeded.
 
 ## Usage
 To run the example, type:
+
     python truck_packing_demo.py
 
 The code will randomly generate a problem with 300 available packages with a weight between 
