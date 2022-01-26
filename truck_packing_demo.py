@@ -98,13 +98,13 @@ if len(feasible_sols[0]):
     for i in first_feasible_sol[0]:
         results_array[-1 * (priority[i]-3)][-1 * (days_since_order[i] - 3)] += 1
 
-    print("\n****************** SOLUTION ****************** ")
+    print("\n****************** SOLUTION ******************\n")
     print('            Days since order was placed')
-    print('{:>5s}{:>5s}{:^5s}{:^5s}{:^5s}'.format('Priority |', '3', '2', '1', '0'))
+    print('{:>5s}{:>5s}{:>5s}{:>5s}{:>5s}'.format('Priority |', '3', '2', '1', '0'))
     print('-' * 40)
 
     for i in range(3):
-        print('{:>5s}{:>10s}{:^5s}{:^5s}{:^5s}'.format(str(-1*(i - 3)), str(results_array[i][0]), str(results_array[i][1]),
+        print('{:>5s}{:>10s}{:>5s}{:>5s}{:>5s}'.format(str(-1*(i - 3)), str(results_array[i][0]), str(results_array[i][1]),
                                                        str(results_array[i][2]), str(results_array[i][3])))
 
     print(("\nTotal number of selected items: {}".format(len(first_feasible_sol[0]))))
