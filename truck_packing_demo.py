@@ -77,13 +77,13 @@ if len(feasible_sols[0]):
     for i in range(num_packages):
         problem_array[-1 * (priority[i]-3)][-1 * (days_since_order[i] - 3)] += 1
 
-    print("\n****************** PROBLEM ****************** ")
+    print("\n****************** PROBLEM ******************\n")
     print('            Days since order was placed')
-    print('{:>5s}{:>5s}{:^5s}{:^5s}{:^5s}'.format('Priority |', '3', '2', '1', '0'))
+    print('{:>5s}{:>5s}{:>5s}{:>5s}{:>5s}'.format('Priority |', '3', '2', '1', '0'))
     print('-' * 40)
 
     for i in range(3):
-        print('{:>5s}{:>10s}{:^5s}{:^5s}{:^5s}'.format(str(-1*(i - 3)), str(problem_array[i][0]), str(problem_array[i][1]),
+        print('{:>5s}{:>10s}{:>5s}{:>5s}{:>5s}'.format(str(-1*(i - 3)), str(problem_array[i][0]), str(problem_array[i][1]),
                                                        str(problem_array[i][2]), str(problem_array[i][3])))
 
     # Calculate number of packages with each priority and number of days since order in the solution
