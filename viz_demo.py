@@ -65,8 +65,8 @@ p2 = ax[1].hist(df['Age'], bins=[-0.5,0.5,1.5,2.5,3.5], histtype='bar',  rwidth=
 ax[1].set_title('Age')
 p3 = ax[2].hist(df['Weight'], bins=10, histtype='bar',  rwidth=0.95, stacked=True)
 ax[2].set_title('Weight')
-plt.show()
-imageLocation.pyplot()
+# plt.show()
+imageLocation.pyplot(fig)
 
 build_load_state = st.text('Building CQM...')
 
@@ -102,49 +102,50 @@ cqm.add_constraint(quicksum(bin_variables[i] for i in range(num_packages))
 build_load_state.text("Building CQM...Done!")
 
 # -----------------  Submit to the CQM sampler -----------------
-run_state = st.text('Sending to CQM hybrid solver...')
-cqm_sampler = LeapHybridCQMSampler() 
-sampleset = cqm_sampler.sample_cqm(cqm, label='Truck Packing Demo')
-run_state.text("Sending to CQM hybrid solver...Done!")
+if st.button('Run on CQM Solver'):
+    run_state = st.text('Sending to CQM hybrid solver...')
+    cqm_sampler = LeapHybridCQMSampler() 
+    sampleset = cqm_sampler.sample_cqm(cqm, label='Truck Packing Demo')
+    run_state.text("Sending to CQM hybrid solver...Done!")
 
-# ----------------- Process the results -----------------
-feasible_sampleset = sampleset.filter(lambda d: d.is_feasible)
+    # ----------------- Process the results -----------------
+    feasible_sampleset = sampleset.filter(lambda d: d.is_feasible)
 
-if not len(feasible_sampleset): 
-    st.write("\nNo feasible solution found.\n")
+    if not len(feasible_sampleset): 
+        st.write("\nNo feasible solution found.\n")
 
-else: 
-    first_feasible_sol = feasible_sampleset.first.sample
+    else: 
+        first_feasible_sol = feasible_sampleset.first.sample
 
-    # Calculate number of packages with each priority and number of days since
-    # order in the solution
-    
-    df['Shipped'] = [first_feasible_sol[i] for i in range(len(first_feasible_sol))]
-    # st.dataframe(df)
+        # Calculate number of packages with each priority and number of days since
+        # order in the solution
+        
+        df['Shipped'] = [first_feasible_sol[i] for i in range(len(first_feasible_sol))]
+        # st.dataframe(df)
 
-    mask = np.array(df['Shipped'], dtype=bool)
-    priority_s, priority_ns = df['Priority'][mask], df['Priority'][~mask]
-    age_s, age_ns = df['Age'][mask], df['Age'][~mask]
-    weight_s, weight_ns = df['Weight'][mask], df['Weight'][~mask]
+        mask = np.array(df['Shipped'], dtype=bool)
+        priority_s, priority_ns = df['Priority'][mask], df['Priority'][~mask]
+        age_s, age_ns = df['Age'][mask], df['Age'][~mask]
+        weight_s, weight_ns = df['Weight'][mask], df['Weight'][~mask]
 
-    chosen = [i for i in first_feasible_sol if first_feasible_sol[i] == 1]
-    total_weight = quicksum(weight[i] for i in chosen) 
+        chosen = [i for i in first_feasible_sol if first_feasible_sol[i] == 1]
+        total_weight = quicksum(weight[i] for i in chosen) 
 
-    # Characterize the solution 
-    # Packages with higher priority (upper row) and the most days since the
-    # order (left most column) should be prioritized in the selection
+        # Characterize the solution 
+        # Packages with higher priority (upper row) and the most days since the
+        # order (left most column) should be prioritized in the selection
 
-    # Draw data distribution
-    st.subheader('Solution:')
-    out_df = pd.DataFrame({'Shipped':[total_weight, len(chosen)], 'Limit':[max_weight, max_packages]}, index=['Weight', 'Num Packages'])
-    st.table(out_df)
-    fig, ax = plt.subplots(1,3, constrained_layout=True, figsize=(8,8))
-    p1 = ax[0].hist([priority_s, priority_ns], bins=[0.5,1.5,2.5,3.5], histtype='bar',  rwidth=0.75, stacked=True)
-    ax[0].set_title('Priority')
-    p2 = ax[1].hist([age_s, age_ns], bins=[-0.5,0.5,1.5,2.5,3.5], histtype='bar',  rwidth=0.8, stacked=True)
-    ax[1].set_title('Age')
-    p3 = ax[2].hist([weight_s, weight_ns], bins=10, histtype='bar',  rwidth=0.95, stacked=True)
-    ax[2].set_title('Weight')
-    fig.legend([p1, p2, p3], labels = ["Shipped", "Not Shipped"], loc='upper left', borderaxespad=0.1,title="Legend")
-    plt.show()
-    imageLocation.pyplot()
+        # Draw data distribution
+        st.subheader('Solution:')
+        out_df = pd.DataFrame({'Shipped':[total_weight, len(chosen)], 'Limit':[max_weight, max_packages]}, index=['Weight', 'Num Packages'])
+        st.table(out_df)
+        fig, ax = plt.subplots(1,3, constrained_layout=True, figsize=(8,8))
+        p1 = ax[0].hist([priority_s, priority_ns], bins=[0.5,1.5,2.5,3.5], histtype='bar',  rwidth=0.75, stacked=True)
+        ax[0].set_title('Priority')
+        p2 = ax[1].hist([age_s, age_ns], bins=[-0.5,0.5,1.5,2.5,3.5], histtype='bar',  rwidth=0.8, stacked=True)
+        ax[1].set_title('Age')
+        p3 = ax[2].hist([weight_s, weight_ns], bins=10, histtype='bar',  rwidth=0.95, stacked=True)
+        ax[2].set_title('Weight')
+        fig.legend([p1, p2, p3], labels = ["Shipped", "Not Shipped"], loc='upper left', borderaxespad=0.1,title="Legend")
+        # plt.show()
+        imageLocation.pyplot(fig)
