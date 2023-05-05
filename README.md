@@ -1,3 +1,8 @@
+[![Open in Leap IDE](	
+	https://cdn-assets.cloud.dwavesys.com/shared/latest/badges/leapide.svg)](
+	https://ide.dwavesys.io/#https://github.com/dwave-training/truck-packing)
+
+
 # Packing a Delivery Truck
 
 In North America there are hundreds of standard box sizes that consumer goods can be
